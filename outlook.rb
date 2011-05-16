@@ -31,7 +31,7 @@ class Outlook
 end
 
 outlook = Outlook.new
-# メールのタイトル、送信日時、EntryId一欄を表示
+# メールのタイトル、送信日時、EntryID一欄を表示
 outlook.mails do |mail|
 	#puts "To     :#{mail.To}"
 	puts "#{mail.SentOn} | #{mail.Subject.unpack("a50")}"
