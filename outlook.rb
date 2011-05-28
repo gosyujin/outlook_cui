@@ -102,7 +102,7 @@ class Outlook
 		# 受信日のYYYYMMDD
 		receivedTime = Date.strptime(mail.SentOn, "%Y/%m/%d").strftime("%Y%m%d")
 		@saveDir = "#{@saveRootPath}" +
-								"#{receivedTime}_#{replace(mail.Subject)}\\"
+				"#{receivedTime}_#{replace(mail.Subject)}\\"
 		if !File.exist?(@saveDir) then
 			Dir.mkdir(@saveDir)
 		end
@@ -113,7 +113,7 @@ class Outlook
 		fullPath = "#{@saveDir}#{self.replace(mail.Subject)}.txt"
 		File.open(fullPath, "w") do |file|
 			file.write "SENDER : #{mail.SenderName}" +
-									"(#{mail.SenderEmailAddress})\n"
+					"(#{mail.SenderEmailAddress})\n"
 			file.write "TO : #{mail.To}\n"
 			file.write "CC : #{mail.CC}\n"
 			file.write "ReceivedTime: #{mail.SentOn}\n"
@@ -128,7 +128,7 @@ class Outlook
 		if mail.Attachments.Count != 0 then
 			mail.Attachments.each do |item|
 				item.SaveAsFile("#{@saveDir}" +
-													"#{self.replace(item.FileName)}")
+					"#{self.replace(item.FileName)}")
 				puts "#{item.FileName}を保存しました。"
 			end
 		else
