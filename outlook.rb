@@ -1,6 +1,7 @@
 # -*- encoding: UTF-8 -*-
 require 'rubygems'
 require 'rjb'
+require 'msgParse'
 require 'win32ole'
 require 'date'
 require 'kconv'
@@ -123,6 +124,17 @@ class Outlook
 		end
 	end
 	
+		# 保存フォルダ名を添付ファイル(拡張子無し)に変更
+	def renameFolder(mail, fileName)
+		receivedTime = Date.strptime(mail.SentOn, "%Y/%m/%d").strftime("%Y%m%d")
+		rename = "#{@saveRootPath}" + 
+								"#{receivedTime}_#{File.basename(fileName, ".*")}\\"
+		if !File.exist?(rename) then
+			File.rename(@saveDir, rename)
+			putsKconv("フォルダ名変更　:#{rename}")
+		end
+	end
+	
 	# @saveRootPath/下にSubject.txtファイルを作成しメール内容を書きこむ
 	def saveMail(mail)
 		fullPath = "#{@saveDir}#{self.replace(mail.Subject)}.txt"
@@ -134,10 +146,11 @@ class Outlook
 			file.write "ReceivedTime: #{mail.SentOn}\n"
 			file.write "SUBJECT     : #{mail.Subject}\n"
 			file.write "BODY        : \n#{mail.Body}\n"
-			putsKconv("本文保存　　　　:#{fullPath}")
+			#putsKconv("本文保存　　　　:#{fullPath}")
+			putsKconv("本文保存　　　　:#{self.replace(mail.Subject)}")
 		end
 	end
-
+	
 	# 添付ファイル保存
 	def saveFile(mail)
 		if mail.Attachments.Count != 0 then
@@ -149,7 +162,9 @@ class Outlook
 				# ファイルが.msgだった場合添付ファイルをぶっこぬき
 				# フォルダ名も変更
 				if item.FileName =~ /.*\.msg/ then 
-					fileName = msgFileParse(item)
+					msg = MsgParse.new
+					msg.inputMsg("#{@saveDir}#{self.replace(item.FileName)}")
+					fileName = msg.saveFile(@saveDir)
 					renameFolder(mail, fileName)
 				end
 			end
@@ -157,7 +172,7 @@ class Outlook
 			putsKconv("添付ファイルはありません。")
 		end
 	end
-
+	
 	# Windowsファイルに使えない記号を変換
 	def replace(str)
 		str.tr('/:*?"<>|\\', Kconv.tosjis('／：＊？”＜＞｜￥'))
@@ -173,49 +188,5 @@ class Outlook
 	def putsCurrentMethod(ex="")
 		puts Kconv.tosjis("Error " + caller.first[/:in \`(.*?)\'\z/, 1] + " - " + ex)
 		#puts "Error " + caller.first[/:in \`(.*?)\'\z/, 1] + " - " + ex
-	end
-	
-	# .msgファイル内の添付ファイルをぶっこぬく
-	# 帰り値に添付ファイルのファイル名(一つ)
-	include Rjb
-	def msgFileParse(item)
-		Rjb::load('./')
-		#Rjb::add_jar(File.expand_path('poi-3.8-beta3-20110606.jar'))
-		#Rjb::add_jar(File.expand_path('msgparser-1.10.jar'))
-		#Rjb::add_jar(File.expand_path('tnef.jar'))
-		# クラス定義
-		system = import("java.lang.System")
-		string = import("java.lang.String")
-		list = import("java.util.List")
-		fileOutputStream = import("java.io.FileOutputStream")
-		msgParser = import("com.auxilii.msgparser.MsgParser")
-		fileAttachment = import("com.auxilii.msgparser.attachment.FileAttachment")
-		
-		putsKconv("添付ファイルが.msgファイルだったのでぶっこぬきます。")
-		msgParser = msgParser.new
-		msg = msgParser.parseMsg("#{@saveDir}" + 
-													"#{self.replace(item.FileName)}")
-		list = msg.getAttachments
-		fileName = ""
-		for i in 0..list.size - 1
-			file = list.get(i)
-			fileName = file.getLongFilename
-			out = fileOutputStream.new("#{@saveDir}" + fileName)
-			out.write(file.getData)
-			putsKconv("添付ファイル保存:#{fileName}")
-			out.close
-		end
-		return fileName
-	end
-	
-	# 保存フォルダ名を添付ファイル(拡張子無し)に変更
-	def renameFolder(mail, fileName)
-		receivedTime = Date.strptime(mail.SentOn, "%Y/%m/%d").strftime("%Y%m%d")
-		rename = "#{@saveRootPath}" + 
-								"#{receivedTime}_#{File.basename(fileName, ".*")}\\"
-		if !File.exist?(rename) then
-			File.rename(@saveDir, rename)
-			putsKconv("フォルダ名変更　:#{rename}")
-		end
 	end
 end
