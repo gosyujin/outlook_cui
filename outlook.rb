@@ -1,4 +1,5 @@
 # -*- encoding: UTF-8 -*-
+# = MicrosoftOutlook内のメールを操作するクラス
 require 'rubygems'
 require 'rjb'
 require 'msgParse'
@@ -9,12 +10,13 @@ require 'jcode'
 $KCODE="s"
 
 class Outlook
+	# MicrosoftOutlookに接続後初期化処理を行う。
+	# MicrosoftOutlookが起動していないと終了する。
 	def initialize
 		begin
-			# Outlookに接続
 			ol = WIN32OLE::connect("Outlook.Application")
 		rescue WIN32OLERuntimeError
-			putsCurrentMethod("MicrosoftOutlookが起動していません。")
+			putsError("MicrosoftOutlookが起動していません。")
 			exit
 		else
 			desktopJa = Kconv.tosjis("デスクトップ")
@@ -35,22 +37,29 @@ class Outlook
 		end
 	end
 	
-	# ハッシュを元にフォルダのEntryIdを取得
+	# プラットフォームがWindowsの場合標準出力をKconv.tosjisでラップ
+	if RUBY_PLATFORM.downcase =~ /mswin(?!ce)|mingw|cygwin|bccwin/ then
+		def $stdout.write(str)
+			super Kconv.tosjis(str)
+		end
+	end
+	
+	# keyを元にフォルダのEntryIdを取得する
 	def getFolderEntryId(key)
 		@folder[key]
 	end
 	
-	# ハッシュを元にメールのEntryIdを取得
+	# keyを元にメールのEntryIdを取得する
 	def getMailEntryId(key)
 		@mail[key]
 	end
 
-	# EntryIdを元にフォルダを取得
+	# entryIdを元にフォルダを取得する
 	def folder(entryId)
 		@nameSpace.GetFolderFromID(entryId)
 	end
 	
-	# ルートからフォルダの一覧を取得
+	# ルートからフォルダの一覧を取得する
 	def folders(count=@defaultCount)
 		folders = @nameSpace.Folders
 		@folderNum = 1
@@ -59,61 +68,61 @@ class Outlook
 				break
 			end
 			GC.start
-			putsKconv(f.Name)
-			putsKconv("N | CNT | FolderName")
+			puts f.Name
+			puts "N | CNT | FolderName"
 			findFolder(f.EntryId)
 		end
 	end
 	
-	# EntryIDを元にメールを取得	
+	# entryIDを元にメールを取得する
 	def mail(entryId)
 		@nameSpace.GetItemFromID(entryId)
 	end
 	
-	# EntryIdを元にメールの一覧を取得
+	# entryIdを元に対象フォルダのメール一覧を取得する
 	def mails(entryId, count=@defaultCount)
 		f = @nameSpace.GetFolderFromID(entryId)
 		if f.Items.Count == 0 then
-			raise Kconv.tosjis("フォルダにメールがありません。")
+			raise "フォルダにメールがありません。"
 		end
 		@mailNum = 1
-		putsKconv("N | A | SentOn              | Name       | Subject")
+		puts "N | A | SentOn              | Name       | Subject"
 		f.Items.each do |mail|
 			if count < @mailNum then
 				break
 			end
 			GC.start
-			putsKconv("#{@mailNum} | " +
+			puts "#{@mailNum} | " +
 						"#{mail.Attachments.Count} | " +
 						"#{mail.SentOn} | " +
 						"#{mail.SenderName.unpack('A10')} | " +
-						"#{mail.Subject.unpack('A35')}")
+						"#{mail.Subject.unpack('A35')}"
 			@mail[@mailNum.to_s] = mail.EntryId
 			@mailNum += 1
 		end
 	end
 
-	# フォルダ名を再帰的に取得
+	# entoryIdを元にフォルダ名を再帰的に取得する
 	def findFolder(entryId, count=@defaultCount)
 		folder(entryId).Folders.each do |f|
 			if count < @folderNum then
 				break
 			end
 			begin
-				putsKconv("#{@folderNum} | " + 
+				puts "#{@folderNum} | " + 
 				      "#{f.Items.Count}通 | " + 
-				      "#{f.Name}")
+				      "#{f.Name}"
 				      # + " | #{f.Parent.Name}"
 				@folder[@folderNum.to_s] = f.EntryId
 				@folderNum += 1
 				findFolder(f.EntryId)
 			rescue => ex
-				putsCurrentMethod(ex)
+				putsError(ex)
 			end
 		end
 	end
 	
-	# @saveRootPath下にディレクトリ作成
+	# @saveRootPath下にディレクトリを作成する
 	def mkdir(mail)
 		# 受信日のYYYYMMDD
 		receivedTime = Date.strptime(mail.SentOn, "%Y/%m/%d").strftime("%Y%m%d")
@@ -124,18 +133,18 @@ class Outlook
 		end
 	end
 	
-		# 保存フォルダ名を添付ファイル(拡張子無し)に変更
+	# 保存フォルダ名を添付ファイル(拡張子無し)に変更する
 	def renameFolder(mail, fileName)
 		receivedTime = Date.strptime(mail.SentOn, "%Y/%m/%d").strftime("%Y%m%d")
 		rename = "#{@saveRootPath}" + 
 								"#{receivedTime}_#{File.basename(fileName, ".*")}\\"
 		if !File.exist?(rename) then
 			File.rename(@saveDir, rename)
-			putsKconv("フォルダ名変更　:#{rename}")
+			puts "■フォルダ名変更　:#{rename}"
 		end
 	end
 	
-	# @saveRootPath/下にSubject.txtファイルを作成しメール内容を書きこむ
+	# @saveDir下にSubject.txtファイルを作成しメール内容を書きこむ
 	def saveMail(mail)
 		fullPath = "#{@saveDir}#{self.replace(mail.Subject)}.txt"
 		File.open(fullPath, "w") do |file|
@@ -146,18 +155,17 @@ class Outlook
 			file.write "ReceivedTime: #{mail.SentOn}\n"
 			file.write "SUBJECT     : #{mail.Subject}\n"
 			file.write "BODY        : \n#{mail.Body}\n"
-			#putsKconv("本文保存　　　　:#{fullPath}")
-			putsKconv("本文保存　　　　:#{self.replace(mail.Subject)}")
+			#puts "■本文保存　　　　:#{fullPath}"
+			puts "■本文保存　　　　:#{self.replace(mail.Subject)}"
 		end
 	end
 	
-	# 添付ファイル保存
+	# @saveDir下に添付ファイルを保存する
 	def saveFile(mail)
 		if mail.Attachments.Count != 0 then
 			mail.Attachments.each do |item|
-				item.SaveAsFile("#{@saveDir}" + 
-													"#{self.replace(item.FileName)}")
-				putsKconv("添付ファイル保存:#{item.FileName}")
+				item.SaveAsFile("#{@saveDir}#{self.replace(item.FileName)}")
+				puts "■添付ファイル保存:#{item.FileName}"
 				
 				# ファイルが.msgだった場合添付ファイルをぶっこぬき
 				# フォルダ名も変更
@@ -169,24 +177,18 @@ class Outlook
 				end
 			end
 		else
-			putsKconv("添付ファイルはありません。")
+			puts "添付ファイルはありません。"
 		end
 	end
 	
-	# Windowsファイルに使えない記号を変換
+	# Windowsファイルに使えない記号を変全角に変換する
 	def replace(str)
 		str.tr('/:*?"<>|\\', Kconv.tosjis('／：＊？”＜＞｜￥'))
 	end
 	
-	# SJISで出力(コマンドプロンプト用)
-	def putsKconv(str)
-		puts Kconv.tosjis(str)
-	end
-	
 	# エラーの起きたメソッドを出力する
-	# 参考http://www.rubyist.net/~nobu/t/20051013.html#p02
-	def putsCurrentMethod(ex="")
-		puts Kconv.tosjis("Error " + caller.first[/:in \`(.*?)\'\z/, 1] + " - " + ex)
-		#puts "Error " + caller.first[/:in \`(.*?)\'\z/, 1] + " - " + ex
+	# http://www.rubyist.net/~nobu/t/20051013.html#p02
+	def putsError(ex="")
+		puts "[Error]" + caller.first[/:in \`(.*?)\'\z/, 1] + " - " + ex
 	end
 end

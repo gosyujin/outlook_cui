@@ -1,10 +1,14 @@
 # -*- encoding: UTF-8 -*-
+# = .msgファイルを操作するクラス
 require 'rubygems'
 require 'rjb'
 require 'kconv'
 
 class MsgParse
 	include Rjb
+	
+	# JavaクラスのImport、Jarの読み込み
+	# 初期化処理を行う
 	def initialize
 		#Rjb::load('./')
 		initJavaClass
@@ -12,7 +16,14 @@ class MsgParse
 		@msg = nil
 	end
 	
-	# JavaのクラスをImport
+	# プラットフォームがWindowsの場合標準出力をKconv.tosjisでラップ
+	if RUBY_PLATFORM.downcase =~ /mswin(?!ce)|mingw|cygwin|bccwin/ then
+		def $stdout.write(str)
+			super Kconv.tosjis(str)
+		end
+	end
+	
+	# JavaのクラスをImportする
 	def initJavaClass
 		@system = import("java.lang.System")
 		@string = import("java.lang.String")
@@ -20,46 +31,45 @@ class MsgParse
 		@fileOutputStream = import("java.io.FileOutputStream")
 	end
 	
-	# jarをImport
+	# Jarを読みこむ
 	def addJar
-		Rjb::add_jar(File.expand_path('tnef-1.3.1.jar'))
-		Rjb::add_jar(File.expand_path('poi-3.2-FINAL-20081019.jar'))
-		Rjb::add_jar(File.expand_path('msgparser-1.10.jar'))
+		Rjb::add_jar(File.expand_path('lib/tnef-1.3.1.jar'))
+		Rjb::add_jar(File.expand_path('lib/poi-3.2-FINAL-20081019.jar'))
+		Rjb::add_jar(File.expand_path('lib/msgparser-1.10.jar'))
 		@msgParser = import("com.auxilii.msgparser.MsgParser")
 		@fileAttachment = import("com.auxilii.msgparser.attachment.FileAttachment")
 	end
 	
-	# .msgファイル読み込み
+	# .msgファイルを読みこむ
 	def inputMsg(path)
 		@msg = @msgParser.new.parseMsg(path)
 	end
 	
-	# 添付ファイルの数をカウント
-	def attachmentSize
+	# .msgファイルの添付ファイル数をカウントする
+	def getAttachmentSize
 		@msg.getAttachments.size
 	end
 	
-	# 添付ファイルをpathに保存
-	# 返り値に保存した添付ファイル名(の一つ)
+	# 添付ファイルをpathに保存する
+	# 返り値は保存した添付ファイル名(の一つ)
 	def saveFile(path)
 		fileName = ""
-		if attachmentSize != 0 then
-			for i in 0..attachmentSize - 1
+		if getAttachmentSize != 0 then
+			for i in 0..getAttachmentSize - 1
 				file = @msg.getAttachments.get(i)
 				begin
 					fileName = file.getLongFilename
 				rescue => ex
-					puts "File name is includeing WAVE DASH??:#{ex}"
+					puts "File name is including WAVE DASH?:#{ex}"
 					fileName = file.getFilename
 				end
 				out = @fileOutputStream.new(path + fileName)
 				out.write(file.getData)
-				puts "Complete        :#{fileName}"
+				puts "■.msgファイル抽出:#{fileName}"
 				out.close
 			end
 		else
 			puts "no temp file."
-			return nil
 		end
 		return fileName
 	end

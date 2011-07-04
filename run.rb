@@ -1,6 +1,8 @@
 # -*- encoding: UTF-8 -*-
+# = outlook.rb実行ファイル
 require 'outlook'
 
+# 標準入力のチェックを行う
 def inputCheck(message)
 	# Input 1～...
 	# 文字列のto_iは0となる
@@ -10,6 +12,8 @@ def inputCheck(message)
 	key = key.to_i.to_s
 end
 
+# メールフォルダ一覧を標準出力後、フォルダNoを
+# 入力するとフォルダ内のメール一覧を標準出力する
 def getMails(o)
 	# フォルダ一覧表示
 	o.folders
@@ -29,8 +33,8 @@ def getMails(o)
 	end
 end
 
+# メール一覧から選択したメール(と添付ファイル)を保存する
 def getMail(o)
-	#TODO 複数できるように
 	# Input 1～...
 	# 文字列のto_iは0となる
 	keys = Array.new
