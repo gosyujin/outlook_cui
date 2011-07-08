@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html 
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>Class: Outlook</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Script-Type" content="text/javascript" />
   <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
   <script type="text/javascript">
@@ -139,31 +139,31 @@ MicrosoftOutlookが起動していないと終了する。
             onclick="toggleCode('M000004-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000004-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 15</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>
-                <span class="ruby-keyword kw">begin</span>
-                        <span class="ruby-identifier">ol</span> = <span class="ruby-constant">WIN32OLE</span><span class="ruby-operator">::</span><span class="ruby-identifier">connect</span>(<span class="ruby-value str">&quot;Outlook.Application&quot;</span>)
-                <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">WIN32OLERuntimeError</span>
-                        <span class="ruby-identifier">putsError</span>(<span class="ruby-value str">&quot;MicrosoftOutlookが起動していません。&quot;</span>)
-                        <span class="ruby-identifier">exit</span>
-                <span class="ruby-keyword kw">else</span>
-                        <span class="ruby-identifier">desktopJa</span> = <span class="ruby-constant">Kconv</span>.<span class="ruby-identifier">tosjis</span>(<span class="ruby-value str">&quot;デスクトップ&quot;</span>)
-                        <span class="ruby-comment cmt"># NameSpace取得(getNameSpaceの引数は&quot;MAPI&quot;のみ)</span>
-                        <span class="ruby-ivar">@nameSpace</span> = <span class="ruby-identifier">ol</span>.<span class="ruby-identifier">getNameSpace</span>(<span class="ruby-value str">&quot;MAPI&quot;</span>)
-                        <span class="ruby-comment cmt"># 保存パス指定</span>
-                        <span class="ruby-ivar">@saveRootPath</span> = <span class="ruby-node">&quot;#{ENV[&quot;USERPROFILE&quot;]}\\&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">desktopJa</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;\\&quot;</span>
-                        <span class="ruby-comment cmt"># 保存パスに作成するディレクトリ作成</span>
-                        <span class="ruby-ivar">@saveDir</span> = <span class="ruby-value str">&quot;&quot;</span>
-                        <span class="ruby-comment cmt"># フォルダ選択番号、ハッシュ</span>
-                        <span class="ruby-ivar">@folderNum</span> = <span class="ruby-value">-1</span>
-                        <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
-                        <span class="ruby-comment cmt"># メール選択番号、ハッシュ</span>
-                        <span class="ruby-ivar">@mailNum</span> = <span class="ruby-value">-1</span>
-                        <span class="ruby-ivar">@mail</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
-                        <span class="ruby-comment cmt"># 取得件数のデフォルト値</span>
-                        <span class="ruby-ivar">@defaultCount</span> = <span class="ruby-value">20</span>
-                <span class="ruby-keyword kw">end</span>
-        <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File outlook.rb, line 15</span>
+15:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>
+16:                 <span class="ruby-keyword kw">begin</span>
+17:                         <span class="ruby-identifier">ol</span> = <span class="ruby-constant">WIN32OLE</span><span class="ruby-operator">::</span><span class="ruby-identifier">connect</span>(<span class="ruby-value str">&quot;Outlook.Application&quot;</span>)
+18:                 <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">WIN32OLERuntimeError</span>
+19:                         <span class="ruby-identifier">putsError</span>(<span class="ruby-value str">&quot;MicrosoftOutlookが起動していません。&quot;</span>)
+20:                         <span class="ruby-identifier">exit</span>
+21:                 <span class="ruby-keyword kw">else</span>
+22:                         <span class="ruby-identifier">desktopJa</span> = <span class="ruby-constant">Kconv</span>.<span class="ruby-identifier">tosjis</span>(<span class="ruby-value str">&quot;デスクトップ&quot;</span>)
+23:                         <span class="ruby-comment cmt"># NameSpace取得(getNameSpaceの引数は&quot;MAPI&quot;のみ)</span>
+24:                         <span class="ruby-ivar">@nameSpace</span> = <span class="ruby-identifier">ol</span>.<span class="ruby-identifier">getNameSpace</span>(<span class="ruby-value str">&quot;MAPI&quot;</span>)
+25:                         <span class="ruby-comment cmt"># 保存パス指定</span>
+26:                         <span class="ruby-ivar">@saveRootPath</span> = <span class="ruby-node">&quot;#{ENV[&quot;USERPROFILE&quot;]}\\&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">desktopJa</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;\\&quot;</span>
+27:                         <span class="ruby-comment cmt"># 保存パスに作成するディレクトリ作成</span>
+28:                         <span class="ruby-ivar">@saveDir</span> = <span class="ruby-value str">&quot;&quot;</span>
+29:                         <span class="ruby-comment cmt"># フォルダ選択番号、ハッシュ</span>
+30:                         <span class="ruby-ivar">@folderNum</span> = <span class="ruby-value">-1</span>
+31:                         <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+32:                         <span class="ruby-comment cmt"># メール選択番号、ハッシュ</span>
+33:                         <span class="ruby-ivar">@mailNum</span> = <span class="ruby-value">-1</span>
+34:                         <span class="ruby-ivar">@mail</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+35:                         <span class="ruby-comment cmt"># 取得件数のデフォルト値</span>
+36:                         <span class="ruby-ivar">@defaultCount</span> = <span class="ruby-value">20</span>
+37:                 <span class="ruby-keyword kw">end</span>
+38:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -188,25 +188,25 @@ entoryIdを元にフォルダ名を再帰的に取得する
             onclick="toggleCode('M000011-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000011-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 106</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">findFolder</span>(<span class="ruby-identifier">entryId</span>, <span class="ruby-identifier">count</span>=<span class="ruby-ivar">@defaultCount</span>)
-                <span class="ruby-identifier">folder</span>(<span class="ruby-identifier">entryId</span>).<span class="ruby-constant">Folders</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
-                        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@folderNum</span> <span class="ruby-keyword kw">then</span>
-                                <span class="ruby-keyword kw">break</span>
-                        <span class="ruby-keyword kw">end</span>
-                        <span class="ruby-keyword kw">begin</span>
-                                <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{@folderNum} | &quot;</span> <span class="ruby-operator">+</span> 
-                                      <span class="ruby-node">&quot;#{f.Items.Count}通 | &quot;</span> <span class="ruby-operator">+</span> 
-                                      <span class="ruby-node">&quot;#{f.Name}&quot;</span>
-                                      <span class="ruby-comment cmt"># + &quot; | #{f.Parent.Name}&quot;</span>
-                                <span class="ruby-ivar">@folder</span>[<span class="ruby-ivar">@folderNum</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">f</span>.<span class="ruby-constant">EntryId</span>
-                                <span class="ruby-ivar">@folderNum</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
-                                <span class="ruby-identifier">findFolder</span>(<span class="ruby-identifier">f</span>.<span class="ruby-constant">EntryId</span>)
-                        <span class="ruby-keyword kw">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ex</span>
-                                <span class="ruby-identifier">putsError</span>(<span class="ruby-identifier">ex</span>)
-                        <span class="ruby-keyword kw">end</span>
-                <span class="ruby-keyword kw">end</span>
-        <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File outlook.rb, line 106</span>
+106:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">findFolder</span>(<span class="ruby-identifier">entryId</span>, <span class="ruby-identifier">count</span>=<span class="ruby-ivar">@defaultCount</span>)
+107:                 <span class="ruby-identifier">folder</span>(<span class="ruby-identifier">entryId</span>).<span class="ruby-constant">Folders</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+108:                         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@folderNum</span> <span class="ruby-keyword kw">then</span>
+109:                                 <span class="ruby-keyword kw">break</span>
+110:                         <span class="ruby-keyword kw">end</span>
+111:                         <span class="ruby-keyword kw">begin</span>
+112:                                 <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{@folderNum} | &quot;</span> <span class="ruby-operator">+</span> 
+113:                                       <span class="ruby-node">&quot;#{f.Items.Count}通 | &quot;</span> <span class="ruby-operator">+</span> 
+114:                                       <span class="ruby-node">&quot;#{f.Name}&quot;</span>
+115:                                       <span class="ruby-comment cmt"># + &quot; | #{f.Parent.Name}&quot;</span>
+116:                                 <span class="ruby-ivar">@folder</span>[<span class="ruby-ivar">@folderNum</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">f</span>.<span class="ruby-constant">EntryId</span>
+117:                                 <span class="ruby-ivar">@folderNum</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+118:                                 <span class="ruby-identifier">findFolder</span>(<span class="ruby-identifier">f</span>.<span class="ruby-constant">EntryId</span>)
+119:                         <span class="ruby-keyword kw">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ex</span>
+120:                                 <span class="ruby-identifier">putsError</span>(<span class="ruby-identifier">ex</span>)
+121:                         <span class="ruby-keyword kw">end</span>
+122:                 <span class="ruby-keyword kw">end</span>
+123:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -229,10 +229,10 @@ entryIdを元にフォルダを取得する
             onclick="toggleCode('M000007-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000007-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 58</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">folder</span>(<span class="ruby-identifier">entryId</span>)
-                <span class="ruby-ivar">@nameSpace</span>.<span class="ruby-constant">GetFolderFromID</span>(<span class="ruby-identifier">entryId</span>)
-        <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File outlook.rb, line 58</span>
+58:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">folder</span>(<span class="ruby-identifier">entryId</span>)
+59:                 <span class="ruby-ivar">@nameSpace</span>.<span class="ruby-constant">GetFolderFromID</span>(<span class="ruby-identifier">entryId</span>)
+60:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -255,20 +255,20 @@ entryIdを元にフォルダを取得する
             onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000008-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 63</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">folders</span>(<span class="ruby-identifier">count</span>=<span class="ruby-ivar">@defaultCount</span>)
-                <span class="ruby-identifier">folders</span> = <span class="ruby-ivar">@nameSpace</span>.<span class="ruby-constant">Folders</span>
-                <span class="ruby-ivar">@folderNum</span> = <span class="ruby-value">1</span>
-                <span class="ruby-identifier">folders</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
-                        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@folderNum</span> <span class="ruby-keyword kw">then</span>
-                                <span class="ruby-keyword kw">break</span>
-                        <span class="ruby-keyword kw">end</span>
-                        <span class="ruby-constant">GC</span>.<span class="ruby-identifier">start</span>
-                        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">f</span>.<span class="ruby-constant">Name</span>
-                        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;N | CNT | FolderName&quot;</span>
-                        <span class="ruby-identifier">findFolder</span>(<span class="ruby-identifier">f</span>.<span class="ruby-constant">EntryId</span>)
-                <span class="ruby-keyword kw">end</span>
-        <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File outlook.rb, line 63</span>
+63:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">folders</span>(<span class="ruby-identifier">count</span>=<span class="ruby-ivar">@defaultCount</span>)
+64:                 <span class="ruby-identifier">folders</span> = <span class="ruby-ivar">@nameSpace</span>.<span class="ruby-constant">Folders</span>
+65:                 <span class="ruby-ivar">@folderNum</span> = <span class="ruby-value">1</span>
+66:                 <span class="ruby-identifier">folders</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+67:                         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@folderNum</span> <span class="ruby-keyword kw">then</span>
+68:                                 <span class="ruby-keyword kw">break</span>
+69:                         <span class="ruby-keyword kw">end</span>
+70:                         <span class="ruby-constant">GC</span>.<span class="ruby-identifier">start</span>
+71:                         <span class="ruby-identifier">puts</span> <span class="ruby-identifier">f</span>.<span class="ruby-constant">Name</span>
+72:                         <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;N | CNT | FolderName&quot;</span>
+73:                         <span class="ruby-identifier">findFolder</span>(<span class="ruby-identifier">f</span>.<span class="ruby-constant">EntryId</span>)
+74:                 <span class="ruby-keyword kw">end</span>
+75:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -291,10 +291,10 @@ keyを元にフォルダのEntryIdを取得する
             onclick="toggleCode('M000005-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000005-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 48</span>
-        <span class="ruby-keyword kw">def</span>  <span class="ruby-identifier">getFolderEntryId</span><span class="ruby-identifier">getFolderEntryId</span>(<span class="ruby-identifier">key</span>)
-                <span class="ruby-ivar">@folder</span>[<span class="ruby-identifier">key</span>]
-        <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File outlook.rb, line 48</span>
+48:         <span class="ruby-keyword kw">def</span>  <span class="ruby-identifier">getFolderEntryId</span><span class="ruby-identifier">getFolderEntryId</span>(<span class="ruby-identifier">key</span>)
+49:                 <span class="ruby-ivar">@folder</span>[<span class="ruby-identifier">key</span>]
+50:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -317,10 +317,10 @@ keyを元にメールのEntryIdを取得する
             onclick="toggleCode('M000006-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000006-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 53</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">getMailEntryId</span>(<span class="ruby-identifier">key</span>)
-                <span class="ruby-ivar">@mail</span>[<span class="ruby-identifier">key</span>]
-        <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File outlook.rb, line 53</span>
+53:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">getMailEntryId</span>(<span class="ruby-identifier">key</span>)
+54:                 <span class="ruby-ivar">@mail</span>[<span class="ruby-identifier">key</span>]
+55:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -343,10 +343,10 @@ entryIDを元にメールを取得する
             onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000009-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 78</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mail</span>(<span class="ruby-identifier">entryId</span>)
-                <span class="ruby-ivar">@nameSpace</span>.<span class="ruby-constant">GetItemFromID</span>(<span class="ruby-identifier">entryId</span>)
-        <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File outlook.rb, line 78</span>
+78:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mail</span>(<span class="ruby-identifier">entryId</span>)
+79:                 <span class="ruby-ivar">@nameSpace</span>.<span class="ruby-constant">GetItemFromID</span>(<span class="ruby-identifier">entryId</span>)
+80:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -369,28 +369,28 @@ entryIdを元に対象フォルダのメール一覧を取得する
             onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000010-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 83</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mails</span>(<span class="ruby-identifier">entryId</span>, <span class="ruby-identifier">count</span>=<span class="ruby-ivar">@defaultCount</span>)
-                <span class="ruby-identifier">f</span> = <span class="ruby-ivar">@nameSpace</span>.<span class="ruby-constant">GetFolderFromID</span>(<span class="ruby-identifier">entryId</span>)
-                <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">f</span>.<span class="ruby-constant">Items</span>.<span class="ruby-constant">Count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-keyword kw">then</span>
-                        <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;フォルダにメールがありません。&quot;</span>
-                <span class="ruby-keyword kw">end</span>
-                <span class="ruby-ivar">@mailNum</span> = <span class="ruby-value">1</span>
-                <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;N | A | SentOn              | Name       | Subject&quot;</span>
-                <span class="ruby-identifier">f</span>.<span class="ruby-constant">Items</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mail</span><span class="ruby-operator">|</span>
-                        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@mailNum</span> <span class="ruby-keyword kw">then</span>
-                                <span class="ruby-keyword kw">break</span>
-                        <span class="ruby-keyword kw">end</span>
-                        <span class="ruby-constant">GC</span>.<span class="ruby-identifier">start</span>
-                        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{@mailNum} | &quot;</span> <span class="ruby-operator">+</span>
-                                                <span class="ruby-node">&quot;#{mail.Attachments.Count} | &quot;</span> <span class="ruby-operator">+</span>
-                                                <span class="ruby-node">&quot;#{mail.SentOn} | &quot;</span> <span class="ruby-operator">+</span>
-                                                <span class="ruby-node">&quot;#{mail.SenderName.unpack('A10')} | &quot;</span> <span class="ruby-operator">+</span>
-                                                <span class="ruby-node">&quot;#{mail.Subject.unpack('A35')}&quot;</span>
-                        <span class="ruby-ivar">@mail</span>[<span class="ruby-ivar">@mailNum</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">mail</span>.<span class="ruby-constant">EntryId</span>
-                        <span class="ruby-ivar">@mailNum</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
-                <span class="ruby-keyword kw">end</span>
-        <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File outlook.rb, line 83</span>
+ 83:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mails</span>(<span class="ruby-identifier">entryId</span>, <span class="ruby-identifier">count</span>=<span class="ruby-ivar">@defaultCount</span>)
+ 84:                 <span class="ruby-identifier">f</span> = <span class="ruby-ivar">@nameSpace</span>.<span class="ruby-constant">GetFolderFromID</span>(<span class="ruby-identifier">entryId</span>)
+ 85:                 <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">f</span>.<span class="ruby-constant">Items</span>.<span class="ruby-constant">Count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-keyword kw">then</span>
+ 86:                         <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;フォルダにメールがありません。&quot;</span>
+ 87:                 <span class="ruby-keyword kw">end</span>
+ 88:                 <span class="ruby-ivar">@mailNum</span> = <span class="ruby-value">1</span>
+ 89:                 <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;N | A | SentOn              | Name       | Subject&quot;</span>
+ 90:                 <span class="ruby-identifier">f</span>.<span class="ruby-constant">Items</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mail</span><span class="ruby-operator">|</span>
+ 91:                         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@mailNum</span> <span class="ruby-keyword kw">then</span>
+ 92:                                 <span class="ruby-keyword kw">break</span>
+ 93:                         <span class="ruby-keyword kw">end</span>
+ 94:                         <span class="ruby-constant">GC</span>.<span class="ruby-identifier">start</span>
+ 95:                         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{@mailNum} | &quot;</span> <span class="ruby-operator">+</span>
+ 96:                                                 <span class="ruby-node">&quot;#{mail.Attachments.Count} | &quot;</span> <span class="ruby-operator">+</span>
+ 97:                                                 <span class="ruby-node">&quot;#{mail.SentOn} | &quot;</span> <span class="ruby-operator">+</span>
+ 98:                                                 <span class="ruby-node">&quot;#{mail.SenderName.unpack('A10')} | &quot;</span> <span class="ruby-operator">+</span>
+ 99:                                                 <span class="ruby-node">&quot;#{mail.Subject.unpack('A35')}&quot;</span>
+100:                         <span class="ruby-ivar">@mail</span>[<span class="ruby-ivar">@mailNum</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">mail</span>.<span class="ruby-constant">EntryId</span>
+101:                         <span class="ruby-ivar">@mailNum</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+102:                 <span class="ruby-keyword kw">end</span>
+103:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -413,16 +413,16 @@ entryIdを元に対象フォルダのメール一覧を取得する
             onclick="toggleCode('M000012-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000012-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 126</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mkdir</span>(<span class="ruby-identifier">mail</span>)
-                <span class="ruby-comment cmt"># 受信日のYYYYMMDD</span>
-                <span class="ruby-identifier">receivedTime</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">strptime</span>(<span class="ruby-identifier">mail</span>.<span class="ruby-constant">SentOn</span>, <span class="ruby-value str">&quot;%Y/%m/%d&quot;</span>).<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y%m%d&quot;</span>)
-                <span class="ruby-ivar">@saveDir</span> = <span class="ruby-node">&quot;#{@saveRootPath}&quot;</span> <span class="ruby-operator">+</span> 
-                                                                <span class="ruby-node">&quot;#{receivedTime}_#{replace(mail.Subject)}\\&quot;</span>
-                <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-ivar">@saveDir</span>) <span class="ruby-keyword kw">then</span>
-                        <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-ivar">@saveDir</span>)
-                <span class="ruby-keyword kw">end</span>
-        <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File outlook.rb, line 126</span>
+126:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mkdir</span>(<span class="ruby-identifier">mail</span>)
+127:                 <span class="ruby-comment cmt"># 受信日のYYYYMMDD</span>
+128:                 <span class="ruby-identifier">receivedTime</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">strptime</span>(<span class="ruby-identifier">mail</span>.<span class="ruby-constant">SentOn</span>, <span class="ruby-value str">&quot;%Y/%m/%d&quot;</span>).<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y%m%d&quot;</span>)
+129:                 <span class="ruby-ivar">@saveDir</span> = <span class="ruby-node">&quot;#{@saveRootPath}&quot;</span> <span class="ruby-operator">+</span> 
+130:                                                                 <span class="ruby-node">&quot;#{receivedTime}_#{replace(mail.Subject)}\\&quot;</span>
+131:                 <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-ivar">@saveDir</span>) <span class="ruby-keyword kw">then</span>
+132:                         <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-ivar">@saveDir</span>)
+133:                 <span class="ruby-keyword kw">end</span>
+134:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -446,10 +446,10 @@ href="http://www.rubyist.net/~nobu/t/20051013.html#p02">www.rubyist.net/~nobu/t/
             onclick="toggleCode('M000017-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000017-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 191</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">putsError</span>(<span class="ruby-identifier">ex</span>=<span class="ruby-value str">&quot;&quot;</span>)
-                <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;[Error]&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">caller</span>.<span class="ruby-identifier">first</span>[<span class="ruby-regexp re">/:in \`(.*?)\'\z/</span>, <span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-value str">&quot; - &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ex</span>
-        <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File outlook.rb, line 191</span>
+191:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">putsError</span>(<span class="ruby-identifier">ex</span>=<span class="ruby-value str">&quot;&quot;</span>)
+192:                 <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;[Error]&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">caller</span>.<span class="ruby-identifier">first</span>[<span class="ruby-regexp re">/:in \`(.*?)\'\z/</span>, <span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-value str">&quot; - &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ex</span>
+193:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -472,16 +472,16 @@ href="http://www.rubyist.net/~nobu/t/20051013.html#p02">www.rubyist.net/~nobu/t/
             onclick="toggleCode('M000013-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000013-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 137</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">renameFolder</span>(<span class="ruby-identifier">mail</span>, <span class="ruby-identifier">fileName</span>)
-                <span class="ruby-identifier">receivedTime</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">strptime</span>(<span class="ruby-identifier">mail</span>.<span class="ruby-constant">SentOn</span>, <span class="ruby-value str">&quot;%Y/%m/%d&quot;</span>).<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y%m%d&quot;</span>)
-                <span class="ruby-identifier">rename</span> = <span class="ruby-node">&quot;#{@saveRootPath}&quot;</span> <span class="ruby-operator">+</span> 
-                                                                <span class="ruby-node">&quot;#{receivedTime}_#{File.basename(fileName, &quot;.*&quot;)}\\&quot;</span>
-                <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">rename</span>) <span class="ruby-keyword kw">then</span>
-                        <span class="ruby-constant">File</span>.<span class="ruby-identifier">rename</span>(<span class="ruby-ivar">@saveDir</span>, <span class="ruby-identifier">rename</span>)
-                        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;■フォルダ名変更　:#{rename}&quot;</span>
-                <span class="ruby-keyword kw">end</span>
-        <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File outlook.rb, line 137</span>
+137:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">renameFolder</span>(<span class="ruby-identifier">mail</span>, <span class="ruby-identifier">fileName</span>)
+138:                 <span class="ruby-identifier">receivedTime</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">strptime</span>(<span class="ruby-identifier">mail</span>.<span class="ruby-constant">SentOn</span>, <span class="ruby-value str">&quot;%Y/%m/%d&quot;</span>).<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y%m%d&quot;</span>)
+139:                 <span class="ruby-identifier">rename</span> = <span class="ruby-node">&quot;#{@saveRootPath}&quot;</span> <span class="ruby-operator">+</span> 
+140:                                                                 <span class="ruby-node">&quot;#{receivedTime}_#{File.basename(fileName, &quot;.*&quot;)}\\&quot;</span>
+141:                 <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">rename</span>) <span class="ruby-keyword kw">then</span>
+142:                         <span class="ruby-constant">File</span>.<span class="ruby-identifier">rename</span>(<span class="ruby-ivar">@saveDir</span>, <span class="ruby-identifier">rename</span>)
+143:                         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;■フォルダ名変更　:#{rename}&quot;</span>
+144:                 <span class="ruby-keyword kw">end</span>
+145:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -504,10 +504,10 @@ Windowsファイルに使えない記号を変全角に変換する
             onclick="toggleCode('M000016-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000016-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 185</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">replace</span>(<span class="ruby-identifier">str</span>)
-                <span class="ruby-identifier">str</span>.<span class="ruby-identifier">tr</span>(<span class="ruby-value str">'/:*?&quot;&lt;&gt;|\\'</span>, <span class="ruby-constant">Kconv</span>.<span class="ruby-identifier">tosjis</span>(<span class="ruby-value str">'／：＊？”＜＞｜￥'</span>))
-        <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File outlook.rb, line 185</span>
+185:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">replace</span>(<span class="ruby-identifier">str</span>)
+186:                 <span class="ruby-identifier">str</span>.<span class="ruby-identifier">tr</span>(<span class="ruby-value str">'/:*?&quot;&lt;&gt;|\\'</span>, <span class="ruby-constant">Kconv</span>.<span class="ruby-identifier">tosjis</span>(<span class="ruby-value str">'／：＊？”＜＞｜￥'</span>))
+187:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -530,26 +530,26 @@ Windowsファイルに使えない記号を変全角に変換する
             onclick="toggleCode('M000015-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000015-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 164</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">saveFile</span>(<span class="ruby-identifier">mail</span>)
-                <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">mail</span>.<span class="ruby-constant">Attachments</span>.<span class="ruby-constant">Count</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-keyword kw">then</span>
-                        <span class="ruby-identifier">mail</span>.<span class="ruby-constant">Attachments</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">item</span><span class="ruby-operator">|</span>
-                                <span class="ruby-identifier">item</span>.<span class="ruby-constant">SaveAsFile</span>(<span class="ruby-node">&quot;#{@saveDir}#{self.replace(item.FileName)}&quot;</span>)
-                                <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;■添付ファイル保存:#{item.FileName}&quot;</span>
-                                
-                                <span class="ruby-comment cmt"># ファイルが.msgだった場合添付ファイルをぶっこぬき</span>
-                                <span class="ruby-comment cmt"># フォルダ名も変更</span>
-                                <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">item</span>.<span class="ruby-constant">FileName</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/.*\.msg/</span> <span class="ruby-keyword kw">then</span> 
-                                        <span class="ruby-identifier">msg</span> = <span class="ruby-constant">MsgParse</span>.<span class="ruby-identifier">new</span>
-                                        <span class="ruby-identifier">msg</span>.<span class="ruby-identifier">inputMsg</span>(<span class="ruby-node">&quot;#{@saveDir}#{self.replace(item.FileName)}&quot;</span>)
-                                        <span class="ruby-identifier">fileName</span> = <span class="ruby-identifier">msg</span>.<span class="ruby-identifier">saveFile</span>(<span class="ruby-ivar">@saveDir</span>)
-                                        <span class="ruby-identifier">renameFolder</span>(<span class="ruby-identifier">mail</span>, <span class="ruby-identifier">fileName</span>)
-                                <span class="ruby-keyword kw">end</span>
-                        <span class="ruby-keyword kw">end</span>
-                <span class="ruby-keyword kw">else</span>
-                        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;添付ファイルはありません。&quot;</span>
-                <span class="ruby-keyword kw">end</span>
-        <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File outlook.rb, line 164</span>
+164:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">saveFile</span>(<span class="ruby-identifier">mail</span>)
+165:                 <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">mail</span>.<span class="ruby-constant">Attachments</span>.<span class="ruby-constant">Count</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-keyword kw">then</span>
+166:                         <span class="ruby-identifier">mail</span>.<span class="ruby-constant">Attachments</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">item</span><span class="ruby-operator">|</span>
+167:                                 <span class="ruby-identifier">item</span>.<span class="ruby-constant">SaveAsFile</span>(<span class="ruby-node">&quot;#{@saveDir}#{self.replace(item.FileName)}&quot;</span>)
+168:                                 <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;■添付ファイル保存:#{item.FileName}&quot;</span>
+169:                                 
+170:                                 <span class="ruby-comment cmt"># ファイルが.msgだった場合添付ファイルをぶっこぬき</span>
+171:                                 <span class="ruby-comment cmt"># フォルダ名も変更</span>
+172:                                 <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">item</span>.<span class="ruby-constant">FileName</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/.*\.msg/</span> <span class="ruby-keyword kw">then</span> 
+173:                                         <span class="ruby-identifier">msg</span> = <span class="ruby-constant">MsgParse</span>.<span class="ruby-identifier">new</span>
+174:                                         <span class="ruby-identifier">msg</span>.<span class="ruby-identifier">inputMsg</span>(<span class="ruby-node">&quot;#{@saveDir}#{self.replace(item.FileName)}&quot;</span>)
+175:                                         <span class="ruby-identifier">fileName</span> = <span class="ruby-identifier">msg</span>.<span class="ruby-identifier">saveFile</span>(<span class="ruby-ivar">@saveDir</span>)
+176:                                         <span class="ruby-identifier">renameFolder</span>(<span class="ruby-identifier">mail</span>, <span class="ruby-identifier">fileName</span>)
+177:                                 <span class="ruby-keyword kw">end</span>
+178:                         <span class="ruby-keyword kw">end</span>
+179:                 <span class="ruby-keyword kw">else</span>
+180:                         <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;添付ファイルはありません。&quot;</span>
+181:                 <span class="ruby-keyword kw">end</span>
+182:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -572,21 +572,21 @@ Windowsファイルに使えない記号を変全角に変換する
             onclick="toggleCode('M000014-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000014-source">
 <pre>
-<span class="ruby-comment cmt"># File outlook.rb, line 148</span>
-        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">saveMail</span>(<span class="ruby-identifier">mail</span>)
-                <span class="ruby-identifier">fullPath</span> = <span class="ruby-node">&quot;#{@saveDir}#{self.replace(mail.Subject)}.txt&quot;</span>
-                <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">fullPath</span>, <span class="ruby-value str">&quot;w&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
-                        <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;SENDER      : #{mail.SenderName}&quot;</span> <span class="ruby-operator">+</span> 
-                                                                        <span class="ruby-node">&quot;(#{mail.SenderEmailAddress})\n&quot;</span>
-                        <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;TO          : #{mail.To}\n&quot;</span>
-                        <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;CC          : #{mail.CC}\n&quot;</span>
-                        <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;ReceivedTime: #{mail.SentOn}\n&quot;</span>
-                        <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;SUBJECT     : #{mail.Subject}\n&quot;</span>
-                        <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;BODY        : \n#{mail.Body}\n&quot;</span>
-                        <span class="ruby-comment cmt">#puts &quot;■本文保存　　　　:#{fullPath}&quot;</span>
-                        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;■本文保存　　　　:#{self.replace(mail.Subject)}&quot;</span>
-                <span class="ruby-keyword kw">end</span>
-        <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File outlook.rb, line 148</span>
+148:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">saveMail</span>(<span class="ruby-identifier">mail</span>)
+149:                 <span class="ruby-identifier">fullPath</span> = <span class="ruby-node">&quot;#{@saveDir}#{self.replace(mail.Subject)}.txt&quot;</span>
+150:                 <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">fullPath</span>, <span class="ruby-value str">&quot;w&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+151:                         <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;SENDER      : #{mail.SenderName}&quot;</span> <span class="ruby-operator">+</span> 
+152:                                                                         <span class="ruby-node">&quot;(#{mail.SenderEmailAddress})\n&quot;</span>
+153:                         <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;TO          : #{mail.To}\n&quot;</span>
+154:                         <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;CC          : #{mail.CC}\n&quot;</span>
+155:                         <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;ReceivedTime: #{mail.SentOn}\n&quot;</span>
+156:                         <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;SUBJECT     : #{mail.Subject}\n&quot;</span>
+157:                         <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span> <span class="ruby-node">&quot;BODY        : \n#{mail.Body}\n&quot;</span>
+158:                         <span class="ruby-comment cmt">#puts &quot;■本文保存　　　　:#{fullPath}&quot;</span>
+159:                         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;■本文保存　　　　:#{self.replace(mail.Subject)}&quot;</span>
+160:                 <span class="ruby-keyword kw">end</span>
+161:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

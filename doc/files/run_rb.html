@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html 
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>File: run.rb</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Script-Type" content="text/javascript" />
   <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
   <script type="text/javascript">
@@ -128,41 +128,41 @@
             onclick="toggleCode('M000003-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000003-source">
 <pre>
-<span class="ruby-comment cmt"># File run.rb, line 37</span>
-<span class="ruby-keyword kw">def</span> <span class="ruby-identifier">getMail</span>(<span class="ruby-identifier">o</span>)
-        <span class="ruby-comment cmt"># Input 1～...</span>
-        <span class="ruby-comment cmt"># 文字列のto_iは0となる</span>
-        <span class="ruby-identifier">keys</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
-        <span class="ruby-keyword kw">begin</span>  
-                <span class="ruby-identifier">print</span> <span class="ruby-value str">&quot;Input Mail No.(split space):&quot;</span>
-                <span class="ruby-identifier">input</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-                <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">clear</span>
-                <span class="ruby-comment cmt"># 先頭の0取り</span>
-                <span class="ruby-identifier">input</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot; &quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
-                        <span class="ruby-identifier">keys</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
-                <span class="ruby-keyword kw">end</span>
-                <span class="ruby-identifier">beforeKeysLength</span> = <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">length</span>
-                <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">reject!</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>
-                        <span class="ruby-identifier">x</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;0&quot;</span>
-                <span class="ruby-keyword kw">end</span>
-        <span class="ruby-keyword kw">end</span> <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">beforeKeysLength</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">length</span>
-        
-        <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
-                <span class="ruby-identifier">entryId</span> = <span class="ruby-identifier">o</span>.<span class="ruby-identifier">getMailEntryId</span>(<span class="ruby-identifier">key</span>)
-                
-                <span class="ruby-comment cmt"># 対象メール取得</span>
-                <span class="ruby-identifier">mail</span> = <span class="ruby-identifier">o</span>.<span class="ruby-identifier">mail</span>(<span class="ruby-identifier">entryId</span>)
-                
-                <span class="ruby-comment cmt">#     mail.ItemProperties.each do |e|</span>
-                <span class="ruby-comment cmt">#             p e.Name</span>
-                <span class="ruby-comment cmt">#     end</span>
-                
-                <span class="ruby-comment cmt"># 保存</span>
-                <span class="ruby-identifier">o</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-identifier">mail</span>)
-                <span class="ruby-identifier">o</span>.<span class="ruby-identifier">saveMail</span>(<span class="ruby-identifier">mail</span>)
-                <span class="ruby-identifier">o</span>.<span class="ruby-identifier">saveFile</span>(<span class="ruby-identifier">mail</span>)
-        <span class="ruby-keyword kw">end</span>
-<span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File run.rb, line 37</span>
+37: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">getMail</span>(<span class="ruby-identifier">o</span>)
+38:         <span class="ruby-comment cmt"># Input 1～...</span>
+39:         <span class="ruby-comment cmt"># 文字列のto_iは0となる</span>
+40:         <span class="ruby-identifier">keys</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+41:         <span class="ruby-keyword kw">begin</span>  
+42:                 <span class="ruby-identifier">print</span> <span class="ruby-value str">&quot;Input Mail No.(split space):&quot;</span>
+43:                 <span class="ruby-identifier">input</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+44:                 <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">clear</span>
+45:                 <span class="ruby-comment cmt"># 先頭の0取り</span>
+46:                 <span class="ruby-identifier">input</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot; &quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+47:                         <span class="ruby-identifier">keys</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+48:                 <span class="ruby-keyword kw">end</span>
+49:                 <span class="ruby-identifier">beforeKeysLength</span> = <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">length</span>
+50:                 <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">reject!</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>
+51:                         <span class="ruby-identifier">x</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;0&quot;</span>
+52:                 <span class="ruby-keyword kw">end</span>
+53:         <span class="ruby-keyword kw">end</span> <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">beforeKeysLength</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">length</span>
+54:         
+55:         <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+56:                 <span class="ruby-identifier">entryId</span> = <span class="ruby-identifier">o</span>.<span class="ruby-identifier">getMailEntryId</span>(<span class="ruby-identifier">key</span>)
+57:                 
+58:                 <span class="ruby-comment cmt"># 対象メール取得</span>
+59:                 <span class="ruby-identifier">mail</span> = <span class="ruby-identifier">o</span>.<span class="ruby-identifier">mail</span>(<span class="ruby-identifier">entryId</span>)
+60:                 
+61:                 <span class="ruby-comment cmt">#     mail.ItemProperties.each do |e|</span>
+62:                 <span class="ruby-comment cmt">#             p e.Name</span>
+63:                 <span class="ruby-comment cmt">#     end</span>
+64:                 
+65:                 <span class="ruby-comment cmt"># 保存</span>
+66:                 <span class="ruby-identifier">o</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-identifier">mail</span>)
+67:                 <span class="ruby-identifier">o</span>.<span class="ruby-identifier">saveMail</span>(<span class="ruby-identifier">mail</span>)
+68:                 <span class="ruby-identifier">o</span>.<span class="ruby-identifier">saveFile</span>(<span class="ruby-identifier">mail</span>)
+69:         <span class="ruby-keyword kw">end</span>
+70: <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -186,25 +186,25 @@
             onclick="toggleCode('M000002-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000002-source">
 <pre>
-<span class="ruby-comment cmt"># File run.rb, line 17</span>
-<span class="ruby-keyword kw">def</span> <span class="ruby-identifier">getMails</span>(<span class="ruby-identifier">o</span>)
-        <span class="ruby-comment cmt"># フォルダ一覧表示</span>
-        <span class="ruby-identifier">o</span>.<span class="ruby-identifier">folders</span>
-        <span class="ruby-keyword kw">begin</span>
-                <span class="ruby-identifier">key</span> = <span class="ruby-value str">&quot;&quot;</span>
-                <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>
-                
-                        <span class="ruby-identifier">key</span> = <span class="ruby-identifier">inputCheck</span>(<span class="ruby-value str">&quot;Input Folder No.:&quot;</span>)
-                <span class="ruby-keyword kw">end</span>
-                <span class="ruby-identifier">entryId</span> = <span class="ruby-identifier">o</span>.<span class="ruby-identifier">getFolderEntryId</span>(<span class="ruby-identifier">key</span>)
-                <span class="ruby-comment cmt"># メール一覧表示</span>
-                <span class="ruby-identifier">o</span>.<span class="ruby-identifier">mails</span>(<span class="ruby-identifier">entryId</span>)
-        <span class="ruby-keyword kw">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ex</span>
-                <span class="ruby-identifier">puts</span> <span class="ruby-identifier">ex</span>
-                <span class="ruby-comment cmt"># フォルダ取得ミスったらやり直し</span>
-                <span class="ruby-keyword kw">retry</span>
-        <span class="ruby-keyword kw">end</span>
-<span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File run.rb, line 17</span>
+17: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">getMails</span>(<span class="ruby-identifier">o</span>)
+18:         <span class="ruby-comment cmt"># フォルダ一覧表示</span>
+19:         <span class="ruby-identifier">o</span>.<span class="ruby-identifier">folders</span>
+20:         <span class="ruby-keyword kw">begin</span>
+21:                 <span class="ruby-identifier">key</span> = <span class="ruby-value str">&quot;&quot;</span>
+22:                 <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>
+23:                 
+24:                         <span class="ruby-identifier">key</span> = <span class="ruby-identifier">inputCheck</span>(<span class="ruby-value str">&quot;Input Folder No.:&quot;</span>)
+25:                 <span class="ruby-keyword kw">end</span>
+26:                 <span class="ruby-identifier">entryId</span> = <span class="ruby-identifier">o</span>.<span class="ruby-identifier">getFolderEntryId</span>(<span class="ruby-identifier">key</span>)
+27:                 <span class="ruby-comment cmt"># メール一覧表示</span>
+28:                 <span class="ruby-identifier">o</span>.<span class="ruby-identifier">mails</span>(<span class="ruby-identifier">entryId</span>)
+29:         <span class="ruby-keyword kw">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ex</span>
+30:                 <span class="ruby-identifier">puts</span> <span class="ruby-identifier">ex</span>
+31:                 <span class="ruby-comment cmt"># フォルダ取得ミスったらやり直し</span>
+32:                 <span class="ruby-keyword kw">retry</span>
+33:         <span class="ruby-keyword kw">end</span>
+34: <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -227,15 +227,15 @@
             onclick="toggleCode('M000001-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000001-source">
 <pre>
-<span class="ruby-comment cmt"># File run.rb, line 6</span>
-<span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inputCheck</span>(<span class="ruby-identifier">message</span>)
-        <span class="ruby-comment cmt"># Input 1～...</span>
-        <span class="ruby-comment cmt"># 文字列のto_iは0となる</span>
-        <span class="ruby-identifier">print</span> <span class="ruby-identifier">message</span>
-        <span class="ruby-identifier">key</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-        <span class="ruby-comment cmt"># 先頭の0取り</span>
-        <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
-<span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File run.rb, line 6</span>
+ 6: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inputCheck</span>(<span class="ruby-identifier">message</span>)
+ 7:         <span class="ruby-comment cmt"># Input 1～...</span>
+ 8:         <span class="ruby-comment cmt"># 文字列のto_iは0となる</span>
+ 9:         <span class="ruby-identifier">print</span> <span class="ruby-identifier">message</span>
+10:         <span class="ruby-identifier">key</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+11:         <span class="ruby-comment cmt"># 先頭の0取り</span>
+12:         <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+13: <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
