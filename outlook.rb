@@ -14,14 +14,14 @@ class Outlook
 	# MicrosoftOutlookが起動していないと終了する。
 	def initialize
 		begin
-			ol = WIN32OLE::connect("Outlook.Application")
+			@ol = WIN32OLE::connect("Outlook.Application")
 		rescue WIN32OLERuntimeError
 			putsError("MicrosoftOutlookが起動していません。")
 			exit
 		else
 			desktopJa = Kconv.tosjis("デスクトップ")
 			# NameSpace取得(getNameSpaceの引数は"MAPI"のみ)
-			@nameSpace = ol.getNameSpace("MAPI")
+			@nameSpace = @ol.getNameSpace("MAPI")
 			# 保存パス指定
 			@saveRootPath = "#{ENV["USERPROFILE"]}\\" + desktopJa + "\\"
 			# 保存パスに作成するディレクトリ作成
@@ -80,16 +80,19 @@ class Outlook
 	end
 	
 	# entryIdを元に対象フォルダのメール一覧を取得する
-	def mails(entryId, count=@defaultCount)
+	def mails(entryId, isAttachmentOnlyMode, count=@defaultCount)
 		f = @nameSpace.GetFolderFromID(entryId)
 		if f.Items.Count == 0 then
 			raise "フォルダにメールがありません。"
 		end
 		@mailNum = 1
-		puts "N | A | SentOn              | Name       | Subject"
+	    puts "N | A | SentOn              | Name       | Subject"
 		f.Items.each do |mail|
 			if count < @mailNum then
 				break
+			end
+			if isAttachmentOnlyMode && mail.Attachments.Count == 0 then 
+				next
 			end
 			GC.start
 			puts "#{@mailNum} | " +
@@ -110,9 +113,9 @@ class Outlook
 			end
 			begin
 				puts "#{@folderNum} | " + 
-				      "#{f.Items.Count}通 | " + 
-				      "#{f.Name}"
-				      # + " | #{f.Parent.Name}"
+					  "#{f.Items.Count}通 | " + 
+					  "#{f.Name}"
+					  # + " | #{f.Parent.Name}"
 				@folder[@folderNum.to_s] = f.EntryId
 				@folderNum += 1
 				findFolder(f.EntryId)
@@ -122,10 +125,18 @@ class Outlook
 		end
 	end
 	
+	def searchMail(entryId, subject)
+		folder = "ML"
+		# WIN32OLEインスタンス, イベントインタフェース名
+		events = WIN32OLE_EVENT.new(@ol, "ApplicationEvents_11")
+		@ol.AdvancedSearch(folder, "urn:schemas:mailheader:subject LIKE '#{subject}'")
+		
+	end
+	
 	# @saveRootPath下にディレクトリを作成する
 	def mkdir(mail)
 		# 受信日のYYYYMMDD
-		receivedTime = Date.strptime(mail.SentOn, "%Y/%m/%d").strftime("%Y%m%d")
+		receivedTime = DateTime.strptime(mail.SentOn, "%Y/%m/%d %H:%M:%S").strftime("%Y%m%d_%H%M%S")
 		@saveDir = "#{@saveRootPath}" + 
 								"#{receivedTime}_#{replace(mail.Subject)}\\"
 		if !File.exist?(@saveDir) then
@@ -135,7 +146,7 @@ class Outlook
 	
 	# 保存フォルダ名を添付ファイル(拡張子無し)に変更する
 	def renameFolder(mail, fileName)
-		receivedTime = Date.strptime(mail.SentOn, "%Y/%m/%d").strftime("%Y%m%d")
+		receivedTime = DateTime.strptime(mail.SentOn, "%Y/%m/%d %H:%M:%S").strftime("%Y%m%d_%H%M%S")
 		rename = "#{@saveRootPath}" + 
 								"#{receivedTime}_#{File.basename(fileName, ".*")}\\"
 		if !File.exist?(rename) then

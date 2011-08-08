@@ -20,12 +20,18 @@ def getMails(o)
 	begin
 		key = ""
 		while key.to_i < 1
-		
 			key = inputCheck("Input Folder No.:")
 		end
 		entryId = o.getFolderEntryId(key)
+		
+		isAttachmentOnlyMode = false
+		flag = inputCheck("AttachmentOnly ? [0|1] (0:n,1:y):")
+		if flag == "1" then
+			isAttachmentOnlyMode = true
+		end
+		
 		# メール一覧表示
-		o.mails(entryId)
+		o.mails(entryId, isAttachmentOnlyMode)
 	rescue => ex
 		puts ex
 		# フォルダ取得ミスったらやり直し
