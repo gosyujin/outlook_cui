@@ -66,7 +66,7 @@ if undefined JAVA_HOME
 
 and add task scheduler
 
-### args
+### Rake args
 
 - entry_id: folder's entry_id 
   - example: "00000000000000 ... 00000AEAAAD000"
@@ -75,6 +75,10 @@ and add task scheduler
   - example: "1" or "1 3 9" or "1..10" or "all"
 - save: saved path
   - default: ./mail
+
+```
+    $ rake entry_id="00000000000000 ... 00000AEAAAD000" id="all" save="C:/mail"
+```
 
 ### Example
 
