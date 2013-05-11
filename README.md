@@ -22,7 +22,7 @@ Or install it yourself as:
   - Java Runtime Environment 1.7.0
 - Java home PATH
   - %JAVA_HOME%
--- Jar files
+- Jar files
   - msgparser (http://auxilii.com/msgparser/Page.php?id=16000)
     - poi (http://poi.apache.org/poifs/)
     - tnef (http://www.freeutils.net/source/jtnef/)
@@ -31,6 +31,7 @@ Or install it yourself as:
 
 if undefined JAVA_HOME
 
+```
     Installing rjb (1.4.6)
     Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension
     .
@@ -54,13 +55,14 @@ if undefined JAVA_HOME
             --curdir
             --ruby=C:/Ruby193/bin/ruby
     extconf.rb:53:in `<main>': JAVA_HOME is not set. (RuntimeError)
+```
 
 ## Usage
 
-- rake.
-- Select a mail folder
-- Select download mails
-- Downloaded !!
+1. rake.
+1. Select a mail folder
+1. Select download mails
+1. Downloaded !!
 
 and add task scheduler
 
@@ -78,6 +80,7 @@ and add task scheduler
 
 - rake
 
+```
     $ rake
       1|         0|メールボックス
       2|         0|削除済みアイテム
@@ -87,9 +90,11 @@ and add task scheduler
       6|         2|spam
     -------------------------------
      id|mail count|folder name
+```
 
 - Select a mail folder and show folder's mails
 
+```
     Select a folder's id:
     5
       1|                    0|test について
@@ -97,21 +102,26 @@ and add task scheduler
       3|                    1|(添付)Excel方眼紙
     -------------------------------------------
      id|attachment file count|mail subject
+```
 
 - Select download mails
 
+```
     Select mails's ids(1 or 1 2 3 or 1..3 or all):
     1..3
+```
 
 - Downloaded !!
 
+```
     save_mail  : testについて       # download mail id = 1
     save_mail  : RE: testについて   # download mail id = 2
-    save_attach: test.txt           #          mail's attachment file
-    save_attach: hogehoge.msg       #          mail's attachment file(.msg)
-    .msg unzip : -> 中身.zip        #          parse .msg file
+    save_attach: test.txt           #  -> mail's attachment file
+    save_attach: hogehoge.msg       #  -> mail's attachment file(.msg)
+    .msg unzip : -> 中身.zip        #  -> parse .msg file
     save_mail  : (添付)Excel方眼紙  # download mail id = 3
-    save_attach: Excel方眼紙.zip    #          mail's attachment file
+    save_attach: Excel方眼紙.zip    #  -> mail's attachment file
+```
 
 ## Contributing
 
