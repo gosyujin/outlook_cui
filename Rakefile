@@ -9,34 +9,80 @@ include Outlook::Utility
 
 task :default => :outlook
 
+# ENVs
+# entry_id:  folder's entry_id.
+#            ex
+#               rake entry_id="00000000000000 ... 00000AEAAAD000"
+#
+# id:        download mail's id.
+#            ex
+#               rake id="all"
+#               rake id="2..30"
+#               rake id="1 3 4 5 6"
+#
+# save:      download save path. (fix me Japanese pathname)
+#            ex
+#               rake save="./mail"
+#
+# limit:     show and download mail, set limit.
+#            ex
+#               rake limit=20
+#
+# attach:    show mail exist attachment file. (except nil!)
+#            ex
+#               rake                # show all
+#               rake attach="true"  # attachment only
+#               rake attach="yes"   # attachment only
+#               rake attach="on"    # attachment only
+#               rake attach=        # attachment only!!
+#               rake attach="no"    # attachment only!!
+#               rake attach="false" # attachment only!!
+#
+# verbose:   show entry_id etc. (except nil!)
+#            ex
+#               same as above "attach"
+#               rake                # verbose off
+#               rake verbose="true" # verbose on
+#               rake verbose="no"   # verbose on!!
+#               etc.
+
+verbose = !verbose      unless ENV['verbose'].nil?
+
 entry_id = ""
 ids = []
 mails = nil
 
-desc 'DEFAULT args entry_id="000000000" id="all" save="C:/hogehoge"'
+task :default => :outlook
+
+desc 'DEFAULT args entry_id id save limit attach verbose'
 task :outlook do
-  # folder's entry_id
-  # ENV["entry_id"] = "00000000000000 ... 00000AEAAAD000"
-  # download mail's entry_id
-  # ENV["id"] = "all"
-  # download path # fix me Japanese pathname
-  # ENV["save"]     = "./mail"
   Rake::Task['save'].invoke
 end
 
 task :folders do
   if ENV["entry_id"].nil?
     folders = OutlookCui.folders
-    # pp folders
 
     folders.each do |id, folder|
-      puts "#{self.rjust(id)}|" \
-           "#{self.rjust(folder["count"])}|" \
-           "#{folder["name"]}"
-      # puts "#{folder["entry_id"]}"
+      out = ""
+      out << "#{folder["entry_id"]}|" if verbose
+      out << "#{self.rjust(id)}|" \
+             "#{self.rjust(folder["count"])}|" \
+             "#{folder["name"]}"
+      puts out
     end
     puts "Choose a folder's id:"
-    id = STDIN.gets.chomp!
+
+    while(0)
+      id = STDIN.gets.chomp!
+      # "a".to_i #=> 0
+      if id.to_i > 0 and id.to_i <= folders.length then
+        break
+      else
+        puts "Out of range or if you input string."
+        puts "One more."
+      end
+    end
 
     entry_id = folders[id]["entry_id"]
   else
@@ -46,14 +92,16 @@ end
 
 task :mails => [:folders] do
   mails = OutlookCui.mails(entry_id)
-  # pp mails
 
   if ENV["id"].nil?
     mails.each do |id, mail|
-      puts "#{self.rjust(id)}|" \
-           "#{self.rjust(mail["attach_count"])}|" \
-           "#{mail["subject"]}"
-      # puts "#{mail["entry_id"]}"
+      out = ""
+      out << "#{mail["entry_id"]}|" if verbose
+      out << "#{self.rjust(id)}|" \
+             "#{self.rjust(mail["attach_count"])}|" \
+             "#{mail["sent"]}|" \
+             "#{mail["subject"]}"
+      puts out
     end
     puts "Choose mails's ids(1 or 1 2 3 or 1..3 or all):"
     id = STDIN.gets.chomp!

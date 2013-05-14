@@ -59,7 +59,7 @@ if undefined JAVA_HOME
 
 ## Usage
 
-1. rake.
+1. rake
 1. Select a mail folder
 1. Select download mails
 1. Downloaded !!
@@ -75,6 +75,8 @@ and add task scheduler
   - example: "1" or "1 3 9" or "1..10" or "all"
 - save: saved path
   - default: ./mail
+- verbose: show detail
+  - default: false
 
 ```
     $ rake entry_id="00000000000000 ... 00000AEAAAD000" id="all" save="C:/mail"

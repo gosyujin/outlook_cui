@@ -9,12 +9,13 @@ require "date"
 module OutlookCui
   extend self
 
-  Attachment_Only = true
   Save_Dir_Root = "./mail"
 
-  # fix me limit flag
-  @limit = false
-  @limit_count = 20 
+  @attachment_only = ENV['attach'].nil? ? false : true
+  @limit_count     = ENV['limit'].nil?  ? nil   : ENV['limit'].to_i
+  @limit           = @limit_count.nil?  ? false : true
+  puts "Attachment only mode"            if @attachment_only
+  puts "Limit max #{@limit_count} mails" if @limit
 
   @f_index = 0
   @folder_list = {}
@@ -32,27 +33,9 @@ module OutlookCui
   end
 
   def folders(folders=nil)
-    if folders.nil? then
-      folders = @folders
-      @f_index = 0
-    else
-      folders = folder(folders["entry_id"]).Folders
-    end
-
-    folders.each do |folder|
-      @f_index += 1
-      folder = { "name"     => folder.Name, 
-                 "count"    => folder.Items.Count, 
-                 "entry_id" => folder.EntryId }
-      @folder_list[@f_index.to_s] = folder 
-
-      folders(folder)
-      GC.start
-    end
+    recur_folders(folders)
+    print "\n"
     @folder_list
-  rescue => ex
-    puts "Error: folders"
-    puts ex
   end
 
   def mails(entry_id)
@@ -63,8 +46,11 @@ module OutlookCui
 
     folder.Items.each do |mail|
       break if @limit and index == @limit_count
-      index += 1
+
       attach_count = mail.Attachments.Count
+      next  if @attachment_only and attach_count == 0
+
+      index += 1
       sent         = mail.ole_respond_to?("SentOn")             ? mail.SentOn             : "unknown"
       sender       = mail.ole_respond_to?("SenderEmailAddress") ? mail.SenderEmailAddress : "unknown" 
       subject      = mail.ole_respond_to?("Subject")            ? mail.Subject            : "unknown"
@@ -88,7 +74,6 @@ module OutlookCui
   end
 
   def save_mail(entry_id, save_dir_root, attachment=true)
-    sleep(1)
     mail = mail(entry_id)
     sender_name   = mail.ole_respond_to?("SenderName")         ? mail.SenderName         : "unknown"
     sender_email  = mail.ole_respond_to?("SenderEmailAddress") ? mail.SenderEmailAddress : "unknown"
@@ -109,6 +94,9 @@ module OutlookCui
       # delete this directory if you want redownload
       puts "skip!      : #{save_dir_name} is exist"
       return
+    else
+      # sleep when downloaded
+      sleep(1)
     end
     
     save_file_name = "#{save_dir_name}.txt"
@@ -170,6 +158,31 @@ private
 
   def mail(entry_id)
     @namespace.GetItemFromID(entry_id)
+  end
+
+  def recur_folders(folders)
+    if folders.nil? then
+      folders = @folders
+      @f_index = 0
+    else
+      folders = folder(folders["entry_id"]).Folders
+    end
+
+    folders.each do |folder|
+      @f_index += 1
+      folder = { "name"     => folder.Name, 
+                 "count"    => folder.Items.Count, 
+                 "entry_id" => folder.EntryId }
+      @folder_list[@f_index.to_s] = folder 
+
+      GC.start
+      recur_folders(folder)
+    end
+    print "\r#{self.rjust(@f_index.to_s)} folders read..."
+  rescue => ex
+    puts "Error: folders"
+    puts ex
+    exit 1
   end
 end
 
