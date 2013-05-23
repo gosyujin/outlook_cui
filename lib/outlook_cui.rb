@@ -170,10 +170,10 @@ private
 
     folders.each do |folder|
       @f_index += 1
-      folder = { "name"     => folder.Name, 
-                 "count"    => folder.Items.Count, 
+      folder = { "name"     => folder.Name,
+                 "count"    => folder.Items.Count,
                  "entry_id" => folder.EntryId }
-      @folder_list[@f_index.to_s] = folder 
+      @folder_list[@f_index.to_s] = folder
 
       GC.start
       recur_folders(folder)
