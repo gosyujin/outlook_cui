@@ -17,13 +17,13 @@ module OutlookCui
     end
 
     def down(msg_path)
-      msg = @msg_parser.new.parseMsg(msg_path.tosjis)
+      msg = @msg_parser.new.parseMsg(msg_path)
       attach_count = msg.getAttachments.size
 
       attach_count.times do |i|
         file = msg.getAttachments.get(i)
         filename = self.replace(file.getLongFilename)
-        path = self.pathname(File::dirname(msg_path.tosjis), filename.tosjis)
+        path = self.pathname(File::dirname(msg_path), filename)
 
         out = @file_output_stream.new(path)
         out.write(file.getData)
@@ -52,6 +52,26 @@ end
 
 class String
   def tosjis
-    self.encode("Shift_JIS")
+  puts "tosjis"
+    str = ""
+    [
+      ["FF5E", "301C"],    # wave-dash
+      ["FF0D", "2212"],    # full-width minus
+      ["2460", "0031"],    # ① -> 1
+      ["2461", "0032"],    # ② -> 2
+      ["2462", "0033"],    # ...
+      ["2463", "0034"],    # ...
+      ["2464", "0035"],    # ...
+      ["2465", "0036"],    # ...
+      ["2466", "0037"],    # ...
+      ["2467", "0038"],    # ...
+      ["2468", "0039"]     # ⑨ -> 9
+                           # and add replace code...
+    ].inject(self) do |s, (before, after)|
+      str = s.gsub(before.to_i(16).chr("UTF-8"),
+                   "_")
+                   #after.to_i(16).chr("UTF-8"))
+    end
+    str.encode("Shift_JIS")
   end
 end

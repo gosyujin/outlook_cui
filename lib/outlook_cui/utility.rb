@@ -22,7 +22,7 @@ module Outlook
 
     # replace "_" if not used Window sign
     def replace(str)
-      str.tr(' /	:*?"<>|\\', '_')
+      str.tr(' /	　:*?"<>|\\', '_')
     end
   end
 end

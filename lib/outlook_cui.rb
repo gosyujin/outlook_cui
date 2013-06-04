@@ -75,18 +75,18 @@ module OutlookCui
 
   def save_mail(entry_id, save_dir_root, attachment=true)
     mail = mail(entry_id)
-    sender_name   = mail.ole_respond_to?("SenderName")         ? mail.SenderName         : "unknown"
-    sender_email  = mail.ole_respond_to?("SenderEmailAddress") ? mail.SenderEmailAddress : "unknown"
-    to            = mail.ole_respond_to?("To")                 ? mail.To                 : "unknown"
-    cc            = mail.ole_respond_to?("CC")                 ? mail.CC                 : "unknown"
-    received_time = mail.ole_respond_to?("SentOn")             ? mail.SentOn             : Time.new
-    subject       = mail.ole_respond_to?("Subject")            ? mail.Subject            : "unknown"
-    body          = mail.ole_respond_to?("Body")               ? mail.Body               : "unknown"
+    sender_name   = mail.ole_respond_to?("SenderName")         ? mail.SenderName.encode("utf-8")         : "unknown"
+    sender_email  = mail.ole_respond_to?("SenderEmailAddress") ? mail.SenderEmailAddress.encode("utf-8") : "unknown"
+    to            = mail.ole_respond_to?("To")                 ? mail.To.encode("utf-8")                 : "unknown"
+    cc            = mail.ole_respond_to?("CC")                 ? mail.CC.encode("utf-8")                 : "unknown"
+    received_time = mail.ole_respond_to?("SentOn")             ? mail.SentOn                             : Time.new
+    subject       = mail.ole_respond_to?("Subject")            ? mail.Subject.encode("utf-8")            : "unknown"
+    body          = mail.ole_respond_to?("Body")               ? mail.Body.encode("utf-8")               : "unknown"
 
     save_dir_root ||= Save_Dir_Root
-    save_dir_root = File.expand_path(save_dir_root)
-    # puts "save_dir   : #{save_dir_root}"
+    save_dir_root = File.expand_path(save_dir_root.encode("utf-8"))
 
+    # puts "save_dir   : #{save_dir_root}"
     save_dir_name = "#{received_time.strftime("%Y%m%d_%H%M%S")}_#{self.replace(subject)}"
     save_dir = self.pathname(save_dir_root, save_dir_name)
 
@@ -133,7 +133,8 @@ module OutlookCui
 
     unless attach_count == 0 then
       attachments.each do |item|
-       save_item_name = self.replace(item.FileName)
+       filename_utf8 = item.FileName.encode("utf-8")
+       save_item_name = self.replace(filename_utf8)
        save_item = self.pathname(save_dir, save_item_name)
 
        item.SaveAsFile(save_item)
@@ -183,6 +184,22 @@ private
     puts "Error: folders"
     puts ex
     exit 1
+  end
+end
+
+class String
+  def show_encoding
+    puts "-----------------"
+    print "string         :"
+    puts  self
+    print "valid_encoding?:"
+    puts  self.valid_encoding?
+    print "encoding       :"
+    puts self.encoding
+    print "byte code      :"
+    self.bytes {|b| print b.to_s + " "}
+    puts ""
+    puts "-----------------"
   end
 end
 
