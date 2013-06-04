@@ -18,44 +18,6 @@ Or install it yourself as:
 
 - Application
   - Microsoft Office Outlook 2007
-- Java (because parse *.msg file)
-  - Java Runtime Environment 1.7.0
-- Java home PATH
-  - %JAVA_HOME%
-- Jar files
-  - msgparser (http://auxilii.com/msgparser/Page.php?id=16000)
-    - poi (http://poi.apache.org/poifs/)
-    - tnef (http://www.freeutils.net/source/jtnef/)
-- Ruby Java Bridge
-  - rjb(from bundle install)
-
-if undefined JAVA_HOME
-
-```
-    Installing rjb (1.4.6)
-    Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension
-    .
-    
-            C:/Ruby193/bin/ruby.exe extconf.rb
-    *** extconf.rb failed ***
-    Could not create Makefile due to some reason, probably lack of
-    necessary libraries and/or headers.  Check the mkmf.log file for more
-    details.  You may need configuration options.
-    
-    Provided configuration options:
-            --with-opt-dir
-            --without-opt-dir
-            --with-opt-include
-            --without-opt-include=${opt-dir}/include
-            --with-opt-lib
-            --without-opt-lib=${opt-dir}/lib
-            --with-make-prog
-            --without-make-prog
-            --srcdir=.
-            --curdir
-            --ruby=C:/Ruby193/bin/ruby
-    extconf.rb:53:in `<main>': JAVA_HOME is not set. (RuntimeError)
-```
 
 ## Usage
 

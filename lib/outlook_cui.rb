@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-require "outlook_cui/msg_parse"
 require "outlook_cui/utility"
 require "outlook_cui/version"
 
@@ -132,19 +131,7 @@ module OutlookCui
     attachments  = mail.Attachments
 
     unless attach_count == 0 then
-      attachments.each do |item|
-       filename_utf8 = item.FileName.encode("utf-8")
-       save_item_name = self.replace(filename_utf8)
-       save_item = self.pathname(save_dir, save_item_name)
-
-       item.SaveAsFile(save_item)
-       puts "save_attach: #{save_item_name}"
-
-       if save_item_name =~ /^.*\.msg/ then
-         msg = MsgParse.new
-         msg.down(save_item)
-       end
-      end
+      recur_save(attachments, save_dir, "save_attach: ")
     end
   rescue => ex
     puts "Error: save_attachment"
@@ -159,6 +146,23 @@ private
 
   def mail(entry_id)
     @namespace.GetItemFromID(entry_id)
+  end
+
+  def recur_save(attachments, save_dir, message="save")
+    attachments.each do |item|
+      filename_utf8 = item.FileName.encode("utf-8")
+      save_item_name = self.replace(filename_utf8)
+      save_item = self.pathname(save_dir, save_item_name)
+
+      item.SaveAsFile(save_item)
+      puts "#{message}#{save_item_name}"
+
+      # zip in the .msg file
+      if save_item_name =~ /^.*\.msg/ then
+        attachments = @namespace.OpenSharedItem(save_item).Attachments
+        recur_save(attachments, save_dir, " .msg unzip: -> ")
+      end
+    end
   end
 
   def recur_folders(folders)

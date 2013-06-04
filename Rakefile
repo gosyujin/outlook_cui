@@ -16,9 +16,9 @@ task :default => :outlook
 #
 # id:        download mail's id.
 #            ex
-#               rake id="all"
-#               rake id="2..30"
-#               rake id="1 3 4 5 6"
+#               rake id="all"       # select ALL mails
+#               rake id="2..30"     # select id = 2, 3 .. 29, 30 mails
+#               rake id="1 3 4 5 6" # select id = 1, 3, 4, 5, 6 mails
 #
 # save:      download save path. (fix me Japanese pathname)
 #            ex
@@ -30,20 +30,20 @@ task :default => :outlook
 #
 # attach:    show mail exist attachment file. (except nil!)
 #            ex
-#               rake                # show all
+#               rake                # show ALL
 #               rake attach="true"  # attachment only
 #               rake attach="yes"   # attachment only
 #               rake attach="on"    # attachment only
-#               rake attach=        # attachment only!!
-#               rake attach="no"    # attachment only!!
-#               rake attach="false" # attachment only!!
+#               rake attach=        # attachment only!
+#               rake attach="no"    # attachment only!
+#               rake attach="false" # attachment only!
 #
 # verbose:   show entry_id etc. (except nil!)
 #            ex
 #               same as above "attach"
-#               rake                # verbose off
+#               rake                # verbose OFF
 #               rake verbose="true" # verbose on
-#               rake verbose="no"   # verbose on!!
+#               rake verbose="no"   # verbose on!
 #               etc.
 
 verbose = !verbose      unless ENV['verbose'].nil?
@@ -62,6 +62,12 @@ end
 task :folders do
   if ENV["entry_id"].nil?
     folders = OutlookCui.folders
+
+    # require 'pp'
+    # pp folders
+    ## sort
+    # folders = folders.sort_by{|id, folder| folder["name"]}
+    # pp folders
 
     folders.each do |id, folder|
       out = ""
