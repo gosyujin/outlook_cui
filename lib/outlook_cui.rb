@@ -9,6 +9,7 @@ module OutlookCui
   extend self
 
   Save_Dir_Root = "./mail"
+  OS_Limit_Path_Length = 255
 
   @attachment_only = ENV['attach'].nil? ? false : true
   @limit_count     = ENV['limit'].nil?  ? nil   : ENV['limit'].to_i
@@ -50,10 +51,10 @@ module OutlookCui
       next  if @attachment_only and attach_count == 0
 
       index += 1
-      sent         = mail.ole_respond_to?("SentOn")             ? mail.SentOn             : "unknown"
-      sender       = mail.ole_respond_to?("SenderEmailAddress") ? mail.SenderEmailAddress : "unknown" 
-      subject      = mail.ole_respond_to?("Subject")            ? mail.Subject            : "unknown"
-      entry_id     = mail.ole_respond_to?("EntryId")            ? mail.EntryId            : "unknown"
+      sent         = ole_call(mail, "SentOn")
+      sender       = ole_call(mail, "SenderEmailAddress")
+      subject      = ole_call(mail, "Subject")
+      entry_id     = ole_call(mail, "EntryId")
 
       mail = { "attach_count" => attach_count, 
                "sent"         => sent, 
@@ -74,13 +75,13 @@ module OutlookCui
 
   def save_mail(entry_id, save_dir_root, attachment=true)
     mail = mail(entry_id)
-    sender_name   = mail.ole_respond_to?("SenderName")         ? mail.SenderName.encode("utf-8")         : "unknown"
-    sender_email  = mail.ole_respond_to?("SenderEmailAddress") ? mail.SenderEmailAddress.encode("utf-8") : "unknown"
-    to            = mail.ole_respond_to?("To")                 ? mail.To.encode("utf-8")                 : "unknown"
-    cc            = mail.ole_respond_to?("CC")                 ? mail.CC.encode("utf-8")                 : "unknown"
-    received_time = mail.ole_respond_to?("SentOn")             ? mail.SentOn                             : Time.new
-    subject       = mail.ole_respond_to?("Subject")            ? mail.Subject.encode("utf-8")            : "unknown"
-    body          = mail.ole_respond_to?("Body")               ? mail.Body.encode("utf-8")               : "unknown"
+    sender_name   = ole_call(mail, "SenderName")
+    sender_email  = ole_call(mail, "SenderEmailAddress")
+    to            = ole_call(mail, "To")
+    cc            = ole_call(mail, "CC")
+    received_time = ole_call(mail, "SentOn")
+    subject       = ole_call(mail, "Subject")
+    body          = ole_call(mail, "Body")
 
     save_dir_root ||= Save_Dir_Root
     save_dir_root = File.expand_path(save_dir_root.encode("utf-8"))
@@ -89,17 +90,21 @@ module OutlookCui
     save_dir_name = "#{received_time.strftime("%Y%m%d_%H%M%S")}_#{self.replace(subject)}"
     save_dir = self.pathname(save_dir_root, save_dir_name)
 
+    save_file_name = "#{save_dir_name}.txt"
+    save_file = self.pathname(save_dir, save_file_name)
+
     if FileTest.exist?(save_dir)
       # delete this directory if you want redownload
-      puts "skip!      : #{save_dir_name} is exist"
+      puts "skip(EXIST): #{save_dir_name} is EXIST"
+      return
+    elsif save_file.length > OS_Limit_Path_Length
+      puts "skip(PATH) : TOO LONG length directory path (more than #{OS_Limit_Path_Length})"
+      puts " path is   : -> #{save_file}"
       return
     else
       # sleep when downloaded
       sleep(1)
     end
-    
-    save_file_name = "#{save_dir_name}.txt"
-    save_file = self.pathname(save_dir, save_file_name)
 
     FileUtils.mkdir_p(save_dir) 
     File.open(save_file, "w") do |file|
@@ -148,6 +153,23 @@ private
     @namespace.GetItemFromID(entry_id)
   end
 
+  def ole_call(ole_obj, method)
+    if ole_obj.ole_respond_to?(method) then
+      if method == "SentOn" then
+        ole_obj.send(method)
+      else
+        ole_obj.send(method).encode("utf-8")
+      end
+    else
+      puts "#{method} is undefined"
+      if method == "SentOn" then
+        Time.new
+      else
+        "unknown"
+      end
+    end
+  end
+
   def recur_save(attachments, save_dir, message="save")
     attachments.each do |item|
       filename_utf8 = item.FileName.encode("utf-8")
@@ -157,7 +179,7 @@ private
       item.SaveAsFile(save_item)
       puts "#{message}#{save_item_name}"
 
-      # zip in the .msg file
+      # pick up zip in the .msg file
       if save_item_name =~ /^.*\.msg/ then
         attachments = @namespace.OpenSharedItem(save_item).Attachments
         recur_save(attachments, save_dir, " .msg unzip: -> ")
