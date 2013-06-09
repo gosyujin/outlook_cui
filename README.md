@@ -30,18 +30,22 @@ and add task scheduler
 
 ### Rake args
 
-- entry_id: folder's entry_id 
-  - example: "00000000000000 ... 00000AEAAAD000"
-      # download mail's entry_id
-- id: mails's id
-  - example: "1" or "1 3 9" or "1..10" or "all"
-- save: saved path
-  - default: ./mail
-- verbose: show detail
-  - default: false
+- `entry_id`: folder's entry_id 
+  - example: `00000000000000 ... 00000AEAAAD000` #=> download mail's entry_id
+- `id`: mails's id
+  - example: `1` or `1 3 9` or `1..10` or `all`
+- `save`: saved path
+  - example: `/home/user/mail/`
+  - default: `./mail`
+- `limit`: show limit
+  - example: `20`
+- `attach`: show mail exist attachment file
+  - example `true`
+- `verbose`: show detail
+  - default: `false`
 
 ```
-    $ rake entry_id="00000000000000 ... 00000AEAAAD000" id="all" save="C:/mail"
+    $ rake entry_id=00000000000000 ... 00000AEAAAD000 id=all save=C:/mail limit=10 attach=true verbose=true
 ```
 
 ### Example
