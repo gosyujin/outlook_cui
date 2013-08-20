@@ -87,7 +87,8 @@ module OutlookCui
     save_dir_root = File.expand_path(save_dir_root.encode("utf-8"))
 
     # puts "save_dir   : #{save_dir_root}"
-    save_dir_name = "#{received_time.strftime("%Y%m%d_%H%M%S")}_#{self.replace(subject)}"
+    received_time_str = received_time.strftime("%Y%m%d_%H%M%S")
+    save_dir_name = "#{received_time_str}_#{self.replace(subject)}"
     save_dir = self.pathname(save_dir_root, save_dir_name)
 
     save_file_name = "#{save_dir_name}.txt"
@@ -95,7 +96,7 @@ module OutlookCui
 
     if FileTest.exist?(save_dir)
       # delete this directory if you want redownload
-      puts "skip(EXIST): #{save_dir_name} is EXIST"
+      puts "skip(EXIST): #{save_dir_name}"
       return
     elsif save_file.length > OS_Limit_Path_Length
       puts "skip(PATH) : TOO LONG length directory path (more than #{OS_Limit_Path_Length})"
@@ -117,7 +118,7 @@ module OutlookCui
                  "BODY        : \n" \
                  "#{body}\n"
     end
-    puts "save_mail  : #{subject}"
+    puts "save_mail  : #{save_dir_name}"
 
     if attachment then
       save_attach(entry_id, save_dir)
